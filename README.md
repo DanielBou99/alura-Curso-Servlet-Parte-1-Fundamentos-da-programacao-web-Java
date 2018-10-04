@@ -115,6 +115,28 @@ public class NovaEmpresaServlet extends HttpServlet {
 
 ```
 
+#### 03 Parâmetros da requisição  
+
+- /gerenciador/WebContent/formNovaEmpresa.html
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="/gerenciador/novaEmpresa" method="POST">
+	
+		Nome: <input type="text" name="nome" />
+		<input type="submit" />
+	
+	</form>
+</body>
+</html>
+```
+
 [Voltar ao Índice](#indice)
 
 ---
