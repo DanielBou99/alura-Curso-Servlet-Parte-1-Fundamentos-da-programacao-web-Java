@@ -335,11 +335,24 @@ public class ListaEmpresasServlets extends HttpServlet {
 
 
 
-[Voltar ao Índice](#indice)
-
----
-
+[Voltar ao Índice](#indi
 ## <a name="parte4">Páginas dinâmicas com JSP</a>
+
+```jsp
+<%
+	String nomeEmpresa = "ALURA Teste";
+	System.out.println(nomeEmpresa);
+%>
+<html>
+<head>
+<title>Empresa Criada</title>
+</head>
+	<body>
+		Empresa Cadastrada <%=nomeEmpresa %> com sucesso!
+	</body>
+</html>
+```
+
 
 
 [Voltar ao Índice](#indice)

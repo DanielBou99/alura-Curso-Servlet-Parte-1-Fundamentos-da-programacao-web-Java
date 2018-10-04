@@ -24,13 +24,13 @@ System.out.println("Cadastrando nova empresa!!");
 		Banco banco = new Banco();
 		banco.adicionaEmpresa(empresa);
 		
-		
+		/*		
 		PrintWriter out = resp.getWriter();
 		out.println("<html>");
 		out.println("<body>");
 		out.println("Empresa Cadastrada "+nomeEmpersa+" com sucesso!");
 		out.println("</body>");
-		out.println("</html>");
+		out.println("</html>");*/
 	
 	}
 
