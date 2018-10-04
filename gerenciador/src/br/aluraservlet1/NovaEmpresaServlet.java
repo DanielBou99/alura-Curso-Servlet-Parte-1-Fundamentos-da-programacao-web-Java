@@ -12,25 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/novaEmpresa")
 public class NovaEmpresaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	/*protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		System.out.println("Cadastrando nova empresa!!");
-		
-		String nomeEmpersa = request.getParameter("nome");
-		
-		PrintWriter out = response.getWriter();
-		out.println("<html>");
-		out.println("<body>");
-		out.println("Empresa Cadastrada "+nomeEmpersa+" com sucesso!");
-		out.println("</body>");
-		out.println("</html>");
-	}*/
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 System.out.println("Cadastrando nova empresa!!");
 		
 		String nomeEmpersa = req.getParameter("nome");
+		Empresa empresa = new Empresa();
+		empresa.setNome(nomeEmpersa);
+		
+		Banco banco = new Banco();
+		banco.adicionaEmpresa(empresa);
+		
 		
 		PrintWriter out = resp.getWriter();
 		out.println("<html>");

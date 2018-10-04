@@ -194,6 +194,146 @@ System.out.println("Cadastrando nova empresa!!");
 
 ## <a name="parte3">Definindo o nosso modelo</a>
 
+#### 02 Definido modelo
+
+```java
+package br.aluraservlet1;
+
+public class Empresa {
+
+	private Integer id;
+	private String nome;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	
+	
+}
+
+```
+
+```java
+package br.aluraservlet1;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Banco {
+	
+	private static List<Empresa> listaEmpresas = new ArrayList<>();
+	
+	static {
+		Empresa empresa = new Empresa();
+		Empresa empresa2 = new Empresa();
+		empresa.setNome("Alura Static");
+		empresa2.setNome("Caelum Static");
+		listaEmpresas.add(empresa);
+		listaEmpresas.add(empresa2);
+	}
+
+	public void adicionaEmpresa(Empresa empresa) {
+		Banco.listaEmpresas.add(empresa);
+	}
+
+	public List<Empresa> getListaEmpresas() {
+		return Banco.listaEmpresas;
+	}
+
+}
+
+```
+
+```java
+package br.aluraservlet1;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/novaEmpresa")
+public class NovaEmpresaServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+System.out.println("Cadastrando nova empresa!!");
+		
+		String nomeEmpersa = req.getParameter("nome");
+		Empresa empresa = new Empresa();
+		empresa.setNome(nomeEmpersa);
+		
+		Banco banco = new Banco();
+		banco.adicionaEmpresa(empresa);
+		
+		
+		PrintWriter out = resp.getWriter();
+		out.println("<html>");
+		out.println("<body>");
+		out.println("Empresa Cadastrada "+nomeEmpersa+" com sucesso!");
+		out.println("</body>");
+		out.println("</html>");
+	
+	}
+
+}
+
+```
+
+
+```java
+package br.aluraservlet1;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/ListaEmpresas")
+public class ListaEmpresasServlets extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Banco banco = new Banco();
+		List<Empresa> lista = banco.getListaEmpresas();
+		
+		PrintWriter out = response.getWriter();
+		out.println("<html><body>");
+		out.println("<ul>");
+		for (Empresa empresa : lista) {
+			out.println("<li>"+empresa.getNome()+"</li>");
+		}
+		out.println("</ul>");
+		out.println("</body></html>");
+		
+		
+	}
+
+}
+
+```
+
+
 
 [Voltar ao Índice](#indice)
 
