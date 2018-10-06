@@ -335,7 +335,8 @@ public class ListaEmpresasServlets extends HttpServlet {
 
 
 
-[Voltar ao Índice](#indi
+[Voltar ao Índice](#indice)
+
 ## <a name="parte4">Páginas dinâmicas com JSP</a>
 
 ```jsp
@@ -355,11 +356,27 @@ public class ListaEmpresasServlets extends HttpServlet {
 
 
 
+
+
+
 [Voltar ao Índice](#indice)
 
 ---
 
 ## <a name="parte5">JSTL e Expression Language</a>
+
+- /gerenciador/WebContent/novaEmpresaCriada.jsp
+
+```jsp
+<html>
+<head>
+<title>Empresa Criada</title>
+</head>
+<body>
+	Empresa Cadastrada ${nome_empresa } com sucesso, ok!!
+</body>
+</html>
+```
 
 
 [Voltar ao Índice](#indice)

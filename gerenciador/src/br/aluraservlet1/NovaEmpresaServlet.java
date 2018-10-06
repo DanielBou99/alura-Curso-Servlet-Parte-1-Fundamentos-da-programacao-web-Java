@@ -1,8 +1,8 @@
 package br.aluraservlet1;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,14 +24,11 @@ System.out.println("Cadastrando nova empresa!!");
 		Banco banco = new Banco();
 		banco.adicionaEmpresa(empresa);
 		
-		/*		
-		PrintWriter out = resp.getWriter();
-		out.println("<html>");
-		out.println("<body>");
-		out.println("Empresa Cadastrada "+nomeEmpersa+" com sucesso!");
-		out.println("</body>");
-		out.println("</html>");*/
-	
+		// chamar o JSP
+		RequestDispatcher rd = req.getRequestDispatcher("/novaEmpresaCriada.jsp");
+		req.setAttribute("nome_empresa", empresa.getNome());
+		rd.forward(req, resp);
+
 	}
 
 }

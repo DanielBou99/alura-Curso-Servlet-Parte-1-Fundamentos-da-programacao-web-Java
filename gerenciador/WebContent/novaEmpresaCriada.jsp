@@ -1,12 +1,8 @@
-<%
-	String nomeEmpresa = "ALURA Teste";
-	System.out.println(nomeEmpresa);
-%>
 <html>
 <head>
 <title>Empresa Criada</title>
 </head>
 <body>
-	Empresa Cadastrada <%=nomeEmpresa %> com sucesso!
+	Empresa Cadastrada ${nome_empresa } com sucesso, ok!!
 </body>
 </html>
