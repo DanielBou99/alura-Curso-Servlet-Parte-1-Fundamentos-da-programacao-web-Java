@@ -377,6 +377,162 @@ public class ListaEmpresasServlets extends HttpServlet {
 </body>
 </html>
 ```
+- /gerenciador/WebContent/formNovaEmpresa.jsp
+
+```jsp
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@page import="br.aluraservlet1.Empresa"%>
+<%@page import="java.util.List"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Página Lista de Empresas JSP</title>
+</head>
+<body>
+	<h3>Lista de Empresas (JSP)</h3>
+	
+	<ul>
+		<c:forEach items="${empresas}" var="empresa">
+			<li>${empresa.nome} - <fmt:formatDate pattern="dd/MM/yyyy" value="${empresa.dataAbertura }"/></li>	
+		</c:forEach>
+	</ul>
+</body>
+</html>
+```
+
+```java
+package br.aluraservlet1;
+
+import java.util.Date;
+
+public class Empresa {
+
+	private Integer id;
+	private String nome;
+	//private Date dataAbertura = new Date();
+	private Date dataAbertura;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Date getDataAbertura() {
+		return dataAbertura;
+	}
+
+	public void setDataAbertura(Date dataAbertura) {
+		this.dataAbertura = dataAbertura;
+	}
+	
+
+}
+
+```
+
+```java
+package br.aluraservlet1;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/novaEmpresa")
+public class NovaEmpresaServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("Cadastrando nova empresa!!");
+
+		String nomeEmpersa = req.getParameter("nome");
+		
+		String paramDataEmpersa = req.getParameter("data");
+		Date dataAbertura = null;
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			dataAbertura = sdf.parse(paramDataEmpersa);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		Empresa empresa = new Empresa();
+		empresa.setNome(nomeEmpersa);
+		empresa.setDataAbertura(dataAbertura);
+
+		Banco banco = new Banco();
+		banco.adicionaEmpresa(empresa);
+
+		// chamar o JSP
+		RequestDispatcher rd = req.getRequestDispatcher("/novaEmpresaCriada.jsp");
+		req.setAttribute("nome_empresa", empresa.getNome());
+		rd.forward(req, resp);
+
+	}
+
+}
+
+```
+
+
+- /gerenciador/WebContent/novaEmpresaCriada.jsp
+
+```jsp
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="java.util.List"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<c:url value="/novaEmpresa" var="linkServletNovaEmpersa" />	
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>FORM NOVA EMPRESA - JSP</title>
+</head>
+<body>
+	<form action="${linkServletNovaEmpersa}" method="POST">
+	
+		Nome: <input type="text" name="nome" />
+		Data Abertura <input type="text" name="data"/>
+		<input type="submit" />
+	
+	</form>
+</body>
+</html>
+```
+
+
+
 
 
 [Voltar ao Índice](#indice)
