@@ -596,15 +596,138 @@ public class NovaEmpresaServlet extends HttpServlet {
 ```
 
 
-
-
-
 [Voltar ao Índice](#indice)
 
 ---
 
 ## <a name="parte7">Completando o CRUD</a>
 
+#### Removendo
+
+```jsp
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@page import="br.aluraservlet1.Empresa"%>
+<%@page import="java.util.List"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Página Lista de Empresas JSP</title>
+</head>
+<body>
+	<h3>Lista de Empresas (JSP)</h3>
+
+<br>
+	<c:if test="${not empty nome_empresa }">
+		Empresa Cadastrada ${nome_empresa } com sucesso, ok!!
+	</c:if>
+<br>
+	
+	<ul>
+		<c:forEach items="${empresas}" var="empresa">
+		
+			<li>${empresa.nome} - 
+			<fmt:formatDate pattern="dd/MM/yyyy" value="${empresa.dataAbertura }"/> - 
+			<a href="/gerenciador/removeEmpresa?id=${empresa.id }">Remove</a> 
+			</li>	
+		</c:forEach>
+	</ul>
+
+</body>
+</html>
+```
+
+```java
+package br.aluraservlet1;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/removeEmpresa")
+public class RemoveEmpresaServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String paramId = request.getParameter("id");
+		
+		Integer id = Integer.valueOf(paramId);
+		System.out.println(id);
+		
+		Banco banco = new Banco();
+		banco.removeEmrpesa(id);
+		
+		response.sendRedirect("listaEmpresas");
+		
+	}
+
+}
+
+```
+
+```java
+package br.aluraservlet1;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class Banco {
+	
+	private static List<Empresa> listaEmpresas = new ArrayList<>();
+	private static Integer chaveSequencial = 1;
+	
+	static {
+		Empresa empresa = new Empresa();
+		Empresa empresa2 = new Empresa();
+		empresa.setNome("Alura Static");
+		empresa2.setNome("Caelum Static");
+		listaEmpresas.add(empresa);
+		listaEmpresas.add(empresa2);
+		empresa.setId(chaveSequencial++);
+		empresa2.setId(chaveSequencial++);
+	}
+
+	public void adicionaEmpresa(Empresa empresa) {
+		empresa.setId(Banco.chaveSequencial++);
+		Banco.listaEmpresas.add(empresa);
+	}
+
+	public List<Empresa> getListaEmpresas() {
+		return Banco.listaEmpresas;
+	}
+
+	public void removeEmrpesa(Integer id) {
+		
+		Iterator<Empresa> it = listaEmpresas.iterator();
+		
+		while(it.hasNext()) {
+			Empresa emp = it.next();
+			if(emp.getId() == id) {
+				it.remove();
+			}
+		}
+		
+		/*for (Empresa empresa : listaEmpresas) {
+			if(empresa.getId() == id) {
+				listaEmpresas.remove(empresa);
+			}
+		}*/
+		
+	}
+
+}
+
+```
 
 [Voltar ao Índice](#indice)
 
