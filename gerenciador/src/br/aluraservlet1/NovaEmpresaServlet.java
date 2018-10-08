@@ -31,9 +31,7 @@ public class NovaEmpresaServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+
 		Empresa empresa = new Empresa();
 		empresa.setNome(nomeEmpersa);
 		empresa.setDataAbertura(dataAbertura);
@@ -42,9 +40,12 @@ public class NovaEmpresaServlet extends HttpServlet {
 		banco.adicionaEmpresa(empresa);
 
 		// chamar o JSP
-		RequestDispatcher rd = req.getRequestDispatcher("/novaEmpresaCriada.jsp");
+//		RequestDispatcher rd = req.getRequestDispatcher("/listaEmpresas");
+//		req.setAttribute("nome_empresa", empresa.getNome());
+//		rd.forward(req, resp);
+		
 		req.setAttribute("nome_empresa", empresa.getNome());
-		rd.forward(req, resp);
+		resp.sendRedirect("listaEmpresas");
 
 	}
 

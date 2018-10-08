@@ -15,6 +15,12 @@
 </head>
 <body>
 	<h3>Lista de Empresas (JSP)</h3>
+
+<br>
+	<c:if test="${not empty nome_empresa }">
+		Empresa Cadastrada ${nome_empresa } com sucesso, ok!!
+	</c:if>
+<br>
 	
 	<ul>
 		<c:forEach items="${empresas}" var="empresa">
@@ -22,20 +28,6 @@
 			<li>${empresa.nome} - <fmt:formatDate pattern="dd/MM/yyyy" value="${empresa.dataAbertura }"/></li>	
 		</c:forEach>
 	</ul>
-	
-	<%-- <ul>
 
-		<%
-			List<Empresa> lista = (List<Empresa>)request.getAttribute("empresas");
-			for (Empresa empresa : lista) {
-		%>
-
-		<li><%=empresa.getNome() %></li>
-
-		<%
-			}
-		%>
-
-	</ul> --%>
 </body>
 </html>
