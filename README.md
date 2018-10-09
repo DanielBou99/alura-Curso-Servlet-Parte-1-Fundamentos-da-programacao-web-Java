@@ -729,6 +729,195 @@ public class Banco {
 
 ```
 
+#### Alterando
+
+```java
+package br.aluraservlet1;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
+@WebServlet("/alteraEmpresa")
+public class AlteraEmpresaServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		System.out.println("ALTERANDO nova empresa");
+		
+		String nomeEmpresa = request.getParameter("nome");
+		String paramDataEmpresa = request.getParameter("data");
+		
+		String paramId = request.getParameter("id");
+		Integer id = Integer.valueOf(paramId);
+		
+		Date dataAbertura = null;
+		
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			dataAbertura = sdf.parse(paramDataEmpresa);
+		} catch (ParseException | java.text.ParseException e) {
+			throw new ServletException(e);
+		}
+		
+		System.out.println(id);
+		
+		Banco banco = new Banco();
+		Empresa empresa = banco.buscaEmpresaId(id);
+		empresa.setNome(nomeEmpresa);
+		empresa.setDataAbertura(dataAbertura); // tudo em "memoria"
+		
+		response.sendRedirect("listaEmpresas");
+		
+	}
+
+}
+
+```
+
+```jsp
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="java.util.List"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<c:url value="/alteraEmpresa" var="linkServletNovaEmpersa" />	
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>FORM NOVA EMPRESA - JSP</title>
+</head>
+<body>
+	<form action="${linkServletNovaEmpersa}" method="POST">
+	
+		Nome: <input type="text" name="nome" value="${empresa.nome}" />
+		Data Abertura <input type="text" name="data" 
+		 value="<fmt:formatDate pattern="dd/MM/yyyy" value="${empresa.dataAbertura}"/>"/>
+		<input type="hidden" name="id" value="${empresa.id }"  >
+		<input type="submit" />
+	
+	</form>
+</body>
+</html>
+```
+
+```java
+package br.aluraservlet1;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class Banco {
+	
+	private static List<Empresa> listaEmpresas = new ArrayList<>();
+	private static Integer chaveSequencial = 1;
+	
+	static {
+		Empresa empresa = new Empresa();
+		Empresa empresa2 = new Empresa();
+		empresa.setNome("Alura Static");
+		empresa2.setNome("Caelum Static");
+		listaEmpresas.add(empresa);
+		listaEmpresas.add(empresa2);
+		empresa.setId(chaveSequencial++);
+		empresa2.setId(chaveSequencial++);
+	}
+
+	public void adicionaEmpresa(Empresa empresa) {
+		empresa.setId(Banco.chaveSequencial++);
+		Banco.listaEmpresas.add(empresa);
+	}
+
+	public List<Empresa> getListaEmpresas() {
+		return Banco.listaEmpresas;
+	}
+
+	public void removeEmrpesa(Integer id) {
+		
+		Iterator<Empresa> it = listaEmpresas.iterator();
+		
+		while(it.hasNext()) {
+			Empresa emp = it.next();
+			if(emp.getId() == id) {
+				it.remove();
+			}
+		}
+		
+		/*for (Empresa empresa : listaEmpresas) {
+			if(empresa.getId() == id) {
+				listaEmpresas.remove(empresa);
+			}
+		}*/
+		
+	}
+
+	public Empresa buscaEmpresaId(Integer id) {
+		for(Empresa empresa : listaEmpresas) {
+			if(empresa.getId() == id) {
+				return empresa;
+			}
+		}
+		return null;
+	}
+
+}
+
+```
+
+```jsp
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@page import="br.aluraservlet1.Empresa"%>
+<%@page import="java.util.List"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Página Lista de Empresas JSP</title>
+</head>
+<body>
+	<h3>Lista de Empresas (JSP)</h3>
+
+<br>
+	<c:if test="${not empty nome_empresa }">
+		Empresa Cadastrada ${nome_empresa } com sucesso, ok!!
+	</c:if>
+<br>
+	
+	<ul>
+		<c:forEach items="${empresas}" var="empresa">
+		
+			<li>${empresa.nome} - 
+			<fmt:formatDate pattern="dd/MM/yyyy" value="${empresa.dataAbertura }"/> - 
+			<a href="/gerenciador/mostraEmpresa?id=${empresa.id }">Editar</a> -  
+			<a href="/gerenciador/removeEmpresa?id=${empresa.id }">Remove</a> 
+			</li>	
+		</c:forEach>
+	</ul>
+
+</body>
+</html>
+```
+
+
+
 [Voltar ao Índice](#indice)
 
 ---
